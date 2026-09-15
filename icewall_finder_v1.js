@@ -55,8 +55,9 @@ function areaKm2(img, level, region) {
 
 // ---------- Run on the v0 box ----------
 var res = iceWalls(aoi);
+Map.setOptions('SATELLITE');   // basemap does the job of the RGB layer
 Map.centerObject(aoi, 10);
-Map.addLayer(res, {bands: ['B4','B3','B2'], min: 0, max: 3000}, 'Sentinel-2 RGB');
+Map.addLayer(res, {bands: ['B4','B3','B2'], min: 0, max: 3000}, 'Sentinel-2 RGB', false);  // off by default (heavy)
 Map.addLayer(res.select('class').gte(1).selfMask(), {palette: ['9ecae1']}, 'Snow/ice (NDSI)', false);
 Map.addLayer(res.select('class').gte(2).selfMask(), {palette: ['ff3300']}, 'ICE WALL candidates > ' + P.slopeCand + '°');
 Map.addLayer(res.select('class').gte(3).selfMask(), {palette: ['ffff00']}, 'ICE WALL priority > ' + P.slopeHot + '°');
@@ -65,7 +66,7 @@ print('Snow/ice total (km²):',      areaKm2(res, 1, aoi));
 print('Ice-wall candidates (km²):', areaKm2(res, 2, aoi));
 print('Ice-wall priority (km²):',   areaKm2(res, 3, aoi));
 
-// ---------- Export the big box (run once; then use icewall_v0_view) ----------
+// ---------- Export the big box (run once; then use icewall_view) ----------
 Export.image.toAsset({
   image: iceWalls(aoiBig).select('class').selfMask(),
   description: 'icewall_v1_classified',
