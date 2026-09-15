@@ -18,25 +18,28 @@ Google Earth Engine script that combines:
 
 Output is a 3-class raster (1 = snow/ice, 2 = candidate, 3 = priority) exported as an Earth Engine asset.
 
-## Preliminary numbers (1° × 0.7° box on the Nepal–Tibet border, ~8,600 km², post-monsoon 2025)
+## Preliminary numbers (v1 — 1° × 0.7° box on the Nepal–Tibet border, ~8,600 km², post-monsoon 2025, cloud-masked)
 
-| Rule | Area |
-|---|---|
-| ice on slopes > 30°, > 4500 m | ≈ 1,210 km² |
-| ice on slopes > 35°, > 4500 m | ≈ 901 km² |
-| ice on slopes > 45°, > 4500 m | ≈ 439 km² |
+| Rule | Area | Share of all snow/ice |
+|---|---|---|
+| snow/ice (NDSI > 0.4) | ≈ 3,419 km² | 100% |
+| ice on slopes > 35°, > 4500 m — *candidates* | ≈ 905 km² | 26% |
+| ice on slopes > 45°, > 4500 m — *priority* | ≈ 441 km² | 13% |
 
-![Langtang box](screenshots/langtang_box_v0.png)
+v0 (no per-pixel cloud mask) gave 901 / 439 km² — the result is stable under cloud masking.
 
-Blue: snow/ice. Red: candidates > 35°. Yellow: priority > 45°. Note the glacial lakes, visible as dark patches — easy to map, unlike the slopes.
+<img width="1917" height="1000" alt="langtang_region_v1" src="https://github.com/user-attachments/assets/40409fd5-2f3a-42ea-a2be-edef68f4a763" />
+
+
+Red: candidates > 35°. Yellow: priority > 45°. Kathmandu is at the bottom of the frame — roughly the distance the August 2026 debris flow travelled.
 
 ## Scripts
 
 | File | Purpose |
 |---|---|
-| `scripts/icewall_finder_v0.js` | Original prototype: compute, display, area stats, export |
-| `scripts/icewall_finder_v1.js` | Same logic refactored: parameters block, per-pixel cloud mask (SCL), single `iceWalls(region)` function |
-| `scripts/icewall_v0_view.js` | Fast viewer for the exported asset (no recomputation) |
+| `scripts/icewall_finder_v1.js` | **Current.** Parameters block, per-pixel cloud mask (SCL), single `iceWalls(region)` function, area stats, export |
+| `scripts/icewall_view.js` | Fast viewer for the exported asset — use for demos and screenshots |
+| `scripts/icewall_finder_v0.js` | Original prototype, kept for reference |
 
 Run in the [Earth Engine Code Editor](https://code.earthengine.google.com/) (free for non-commercial use). The export step writes to your own Cloud project — change `assetId` accordingly.
 
@@ -59,4 +62,4 @@ Run in the [Earth Engine Code Editor](https://code.earthengine.google.com/) (fre
 ## Credits
 
 Contains modified Copernicus Sentinel data (2025). SRTM courtesy of NASA/USGS. Built with Google Earth Engine.
-Idea prompted by a public analysis of the August 2026 Nepal event; method reviewed informally by a geologist (thank you).
+Idea prompted by a public analysis of the August 2026 Nepal event; method reviewed by the geologist Ivo Karmann (thank you).
