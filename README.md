@@ -1,3 +1,7 @@
+   <p align="center">
+     <img src="cover.svg" alt="Ice Wall Finder" width="100%">
+   </p>
+   
 # Ice Wall Finder
 
 Mapping steep, ice-covered slopes ("ice walls") in the Himalaya from open satellite data — a first step toward an inventory of a hazard category that current glacial risk maps don't cover.
